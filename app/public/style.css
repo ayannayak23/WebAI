@@ -1,0 +1,101 @@
+body {
+    font-family: helvetica, arial, sans-serif;
+    margin: 2em;
+    color: #3D3D3D;
+}
+
+h1 {
+    font-style: italic;
+    color: rgb(245, 66, 176);
+}
+
+video {
+    display: block;
+}
+
+section {
+    opacity: 1;
+    transition: opacity 500ms ease-in-out;
+}
+
+.removed {
+    display: none;
+}
+
+.dimmed {
+    opacity: 0.2;
+}
+
+#loading {
+    padding: 12px;
+    background-color: rgb(245, 66, 176);
+    color: #fff;
+    text-align: center;
+    font-weight: bold;
+    display: block;
+    max-width: fit-content;
+    margin: auto;
+}
+
+.invisible {
+    display: none !important;
+}
+
+.spinner {
+    width: 30px;
+    height: 30px;
+    border: 4px solid #ccc;
+    border-top: 4px solid #333;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 10px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+#imageUpload {
+    margin-top: 20px;
+}
+
+#imageCanvas {
+    max-width: 500px;
+    max-height: 500px;
+    border: 1px solid #ccc;
+    margin-top: 10px;
+    display: block;
+}
+
+
+.camView {
+    position: relative;
+    width: calc(100% - 20px);
+    margin: 10px;
+    cursor: pointer;
+}
+.camView p {
+    position: absolute;
+    padding: 5px;
+    background-color: rgba(245, 66, 176, 0.85);
+    color: #FFF;
+    border: 1px dashed rgba(255, 255, 255, 0.7);
+    z-index: 2;
+    font-size: 12px;
+}
+
+.highlighter {
+    background: rgba(0, 255, 0, 0.25);
+    border: 1px dashed #fff;
+    z-index: 1;
+    position: absolute;
+}
+
+.panel {
+    border: 1px solid #ccc;
+    padding: 12px;
+    margin: 10px 0;
+    background-color: #f9f9f9;
+    max-width: 400px;
+}

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1> Multiple object detection using COCO-SSD in TensorFlow.js </h1>
+    <p> wait for the model to load before clicking the button to enable the webcam at which point it will become visible to use.</p>
+
+    <section id="demos" class="dimmed">
+        <p> Hold some objects up close to your webcam to get a real-time classification! When ready click "enable webcam" below and accept access to the webcam when the browser asks (check the top left of your window) </p>
+        <button id="webcamButton"> Enable Webcam </button>
+        <button id="stopWebcam" disabled>Stop Webcam</button>
+
+        <div id="imageUpload">
+            <input type="file" id="imageInput" accept="image/*">
+            <canvas id="imageCanvas" class="invisible"></canvas>
+        </div>
+
+
+
+        <div id="liveView" class="camView invisible">
+            <video id="webcam" autoplay muted width="640" height="480"></video>
+        </div>
+    </section>
+
+    <div id="loading">
+        <div class="spinner"></div>
+        <p>Loading object detection model… Please wait.</p>
+    </div>
+
+    <div id="modelInfo" class="panel invisible">
+    <h3>Model Information</h3>
+    <ul>
+        <li><strong>Name:</strong> COCO-SSD (MobileNet v2)</li>
+        <li><strong>Framework:</strong> TensorFlow.js (v4.22.0)</li>
+        <li><strong>Model Size:</strong> ~268 KB (unpacked)</li>
+        <li><strong>Purpose:</strong> Real-time object detection</li>
+    </ul>
+    </div>
+
+    <!-- Import TensorFlow.js library -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs/dist/tf.min.js" type="text/javascript"></script>
+    <!-- Load the coco-ssd model to use to recognize things in images -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd"></script>
+    <!-- Load our custom script after libraries are available -->
+    <script src="script.js" defer></script>
+</body>
+</html>
