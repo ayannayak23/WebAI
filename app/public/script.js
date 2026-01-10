@@ -32,7 +32,7 @@ const CONF_HISTORY_SIZE = 20;
 
 const classColors = {};
 const colorPalette = [
-    'rgb(245, 66, 176)', '#e6194b', '#f58231', '#4363d8',
+    '#0066CC', '#e6194b', '#f58231', 'rgb(245, 66, 176)',
     '#ffe119', '#911eb4', '#46f0f0', '#3cb44b',
     '#bcf60c', '#fabebe', '#008080', '#e6beff'
 ];
@@ -45,7 +45,7 @@ const APPLICATION_CLASSES = new Set([
     'person',
     'cell phone',
     'laptop',
-    'bottle'
+    'backpack'
 ]);
 
 function getColorForClass(className) {
@@ -55,6 +55,14 @@ function getColorForClass(className) {
     }
     return classColors[className];
 }
+
+// Tracking configuration
+const MAX_DISTANCE = 70; // pixels
+const MAX_MISSED_FRAMES = 10;
+
+
+let trackedObjects = {};
+let nextTrackId = 1;
 
 
 // Store the resulting model in the global scope of our app.
@@ -125,6 +133,10 @@ function stopWebcam() {
     document.getElementById('confidenceControl').classList.add('invisible');
     screenshotBtn.disabled = true;
     document.getElementById('toggleROI').disabled = true;
+
+    trackedObjects = {};
+    nextTrackId = 1;
+
 
     // Clear filters
     filterList.innerHTML = '';
@@ -293,27 +305,6 @@ function isInsideROI(bbox, roi) {
   );
 }
 
-// Draw ROI rectangle on the live view (called from predictWebcam)
-function drawROI(canvas) {
-    if (!roi.active) return;
-
-    const ctx = canvas.getContext('2d');
-    ctx.strokeStyle = 'rgba(0, 255, 0, 0.8)';
-    ctx.lineWidth = 2;
-    ctx.setLineDash([5, 5]);
-    ctx.strokeRect(roi.x, roi.y, roi.width, roi.height);
-    ctx.setLineDash([]);
-
-    // Draw corner handles
-    const handleSize = 8;
-    ctx.fillStyle = 'rgba(0, 255, 0, 0.8)';
-    ctx.fillRect(roi.x - handleSize / 2, roi.y - handleSize / 2, handleSize, handleSize);
-    ctx.fillRect(roi.x + roi.width - handleSize / 2, roi.y - handleSize / 2, handleSize, handleSize);
-    ctx.fillRect(roi.x - handleSize / 2, roi.y + roi.height - handleSize / 2, handleSize, handleSize);
-    ctx.fillRect(roi.x + roi.width - handleSize / 2, roi.y + roi.height - handleSize / 2, handleSize, handleSize);
-}
-
-
 var boundingBoxes = [];
 
 // Prediction loop
@@ -337,6 +328,8 @@ function predictWebcam(timestamp) {
     model.detect(video).then(function(predictions) {
         tf.tidy(() => {
             updateClassFilters(predictions);
+            trackDetections(predictions);
+
             const endTime = performance.now();
             timeValue.textContent = (endTime - startTime).toFixed(1);
             const roiFilteredPredictions = predictions.filter(pred =>
@@ -384,7 +377,7 @@ function predictWebcam(timestamp) {
                     const color = getColorForClass(predictions[n].class);
                     const avg = getAverageConfidence(cls);
 
-                    p.innerText = predictions[n].class + ' - with ' +
+                    p.innerText = '#' + predictions[n].trackId + " " + predictions[n].class + ' - with ' +
                         Math.round(parseFloat(predictions[n].score) * 100) +
                         '% confidence.' + (avg ? ` (avg: ${Math.round(avg * 100)}%)` : '');
                     p.style = 'margin-left: ' + (predictions[n].bbox[0] * scaleX) + 'px; margin-top: ' +

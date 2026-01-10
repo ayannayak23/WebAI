@@ -6,7 +6,7 @@ body {
 
 h1 {
     font-style: italic;
-    color: rgb(245, 66, 176);
+    color: #0066CC;
     font-size: 30px;
 }
 
@@ -32,7 +32,7 @@ section {
 
 #loading {
     padding: 20px;
-    background-color: rgb(245, 66, 176);
+    background-color: #0066CC;
     color: #fff;
     text-align: center;
     font-weight: bold;
@@ -123,12 +123,12 @@ section {
 }
 
 .btn-primary {
-    background-color: rgb(245, 66, 176);
+    background-color: #0066CC;
     color: white;
 }
 
 .btn-primary:hover:not(:disabled) {
-    background-color: rgb(220, 50, 150);
+    background-color: #004499;
     transform: translateY(-2px);
 }
 
@@ -159,7 +159,7 @@ section {
 }
 
 .file-input:hover {
-    border-color: rgb(245, 66, 176);
+    border-color: #0066CC;
 }
 
 #screenshotBtn {
@@ -208,7 +208,7 @@ section {
 .camView p {
     position: absolute;
     padding: 5px 8px;
-    background-color: rgba(245, 66, 176, 0.9);
+    background-color: rgba(0, 102, 204, 0.9);
     color: #FFF;
     border: 1px solid rgba(255, 255, 255, 0.7);
     border-radius: 4px;
@@ -339,14 +339,16 @@ section {
 
 .backend-select:focus {
     outline: none;
-    border-color: rgb(245, 66, 176);
+    border-color: #0066CC;
 }
 
 #occupancyWarning {
     margin-top: 15px;
     font-weight: bold;
+    font-size: 20px;
     color: red;
     align-items: center;
+    display: flex;
 }
 
 /* Model info panel at bottom */

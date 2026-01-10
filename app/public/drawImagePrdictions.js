@@ -37,6 +37,10 @@ imageInput.addEventListener('change', () => {
             document.getElementById('confidenceControl').classList.add('invisible');
             screenshotBtn.disabled = true;
 
+            trackedObjects = {};
+            nextTrackId = 1;
+
+
             // Clear filters
             filterList.innerHTML = '';
             activeClasses.clear();
