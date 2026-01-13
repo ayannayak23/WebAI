@@ -41,13 +41,6 @@ let colorIndex = 0;
 // ROI (Region of Interest) configuration
 let roi = { x: 50, y: 50, width: 200, height: 200, active: false };
 
-const APPLICATION_CLASSES = new Set([
-    'person',
-    'cell phone',
-    'laptop',
-    'backpack'
-]);
-
 function getColorForClass(className) {
     if (!classColors[className]) {
         classColors[className] = colorPalette[colorIndex % colorPalette.length];
@@ -209,8 +202,6 @@ function updateClassFilters(predictions) {
     }
 
     predictions.forEach(pred => {
-        // Only create filters for classes in APPLICATION_CLASSES
-        if (!APPLICATION_CLASSES.has(pred.class)) return;
         
         if (!createdClasses.has(pred.class)) {
             createdClasses.add(pred.class);
@@ -267,26 +258,6 @@ function updateClassCountsUI() {
         const count = classCounts[cls] || 0;
         countSpan.textContent = ` (${count})`;
     });
-}
-
-// Calculate average confidence for a class
-function getAverageConfidence(cls) {
-    const history = confidenceHistory[cls];
-    if (!history || history.length === 0) return null;
-
-    const sum = history.reduce((a, b) => a + b, 0);
-    return sum / history.length;
-}
-
-function checkOccupancy() {
-    const people = classCounts['person'] || 0;
-
-    if (people >= 4) {
-        occupancyWarning.textContent = '⚠ High occupancy detected';
-        occupancyWarning.classList.remove('invisible');
-    } else {
-        occupancyWarning.classList.add('invisible');
-    }
 }
 
 function isInsideROI(bbox, roi) {
@@ -357,8 +328,6 @@ function predictWebcam(timestamp) {
                 const cls = predictions[n].class;
                 const score = predictions[n].score;
 
-                if (!APPLICATION_CLASSES.has(cls)) continue;
-
                 if (!confidenceHistory[cls]) {
                     confidenceHistory[cls] = [];
                 }
@@ -375,11 +344,10 @@ function predictWebcam(timestamp) {
                     if (!activeClasses.has(cls)) continue;
                     const p = document.createElement('p');
                     const color = getColorForClass(predictions[n].class);
-                    const avg = getAverageConfidence(cls);
 
-                    p.innerText = '#' + predictions[n].trackId + " " + predictions[n].class + ' - with ' +
+                    p.innerText = predictions[n].class + ' - with ' +
                         Math.round(parseFloat(predictions[n].score) * 100) +
-                        '% confidence.' + (avg ? ` (avg: ${Math.round(avg * 100)}%)` : '');
+                        '% confidence.';
                     p.style = 'margin-left: ' + (predictions[n].bbox[0] * scaleX) + 'px; margin-top: ' +
                         (predictions[n].bbox[1] * scaleY - 10) + 'px; width: ' +
                         (predictions[n].bbox[2] * scaleX - 10) + 'px; top: 0; left: 0;';
@@ -430,8 +398,6 @@ function predictWebcam(timestamp) {
             }
 
             updateClassCountsUI();
-            checkOccupancy();
-
 
         });
         // Call this function again to keep predicting when the browser is ready.
