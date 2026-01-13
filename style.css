@@ -507,6 +507,7 @@ section {
 
     .flip-camera-btn {
         display: flex;
+        
     }
 
     #performancePanel {
@@ -521,5 +522,14 @@ section {
     #performancePanel p{
         font-size: 8px;
         margin: 4px 0;
+    }
+
+    #toggleROI {
+        display: none;
+    }
+
+    #screenshotBtn {
+        grid-column: 1 / -1;
+        width: 50%;
     }
 }
